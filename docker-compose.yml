@@ -1,0 +1,14 @@
+version: '3.3'
+
+services:
+  t2v-transformers:
+    build:
+      context: .
+      dockerfile: ./custom.Dockerfile
+      args:
+        MODEL_NAME: sentence-transformers/msmarco-distilroberta-base-v2
+    image: semitechnologies/transformers-inference:sentence-transformers-msmarco-distilroberta-base-v2
+    container_name: t2v-transformers
+    environment:
+      ENABLE_CUDA: 1 # set to 1 to enable
+      NVIDIA_VISIBLE_DEVICES: all
