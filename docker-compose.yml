@@ -1,14 +1,27 @@
-version: '3.3'
-
 services:
-  t2v-transformers:
+  deepfind-weaviate-t2v-transformers:
     build:
       context: .
-      dockerfile: ./custom.Dockerfile
+      dockerfile: deepfind.Dockerfile
       args:
-        MODEL_NAME: sentence-transformers/msmarco-distilroberta-base-v2
-    image: semitechnologies/transformers-inference:sentence-transformers-msmarco-distilroberta-base-v2
-    container_name: t2v-transformers
-    environment:
-      ENABLE_CUDA: 1 # set to 1 to enable
-      NVIDIA_VISIBLE_DEVICES: all
+        # Se si usa MODEL_PATH, il modello viene preso dal folder
+        #        - MODEL_PATH=./models/dpr/huggingface/dbmdz/bert-base-italian-uncased
+        # Se si usa MODEL_NAME, il modello viene scaricato da HuggingFace
+        - MODEL_NAME=efederici/mmarco-sentence-BERTino
+    image: deepfindai/t2v-transformers:efederici.mmarco-sentence-BERTino
+    container_name: deepfind-weaviate-t2v-transformers
+    restart: always
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: 0
+              capabilities: [gpu]
+    networks:
+      - deepfind
+
+networks:
+  deepfind:
+    name: 'deepfind'
+    driver: bridge

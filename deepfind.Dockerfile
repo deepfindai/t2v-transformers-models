@@ -1,4 +1,4 @@
-FROM nvidia/cuda:11.7.0-devel-ubuntu22.04
+FROM nvidia/cuda:11.7.1-devel-ubuntu22.04
 
 WORKDIR /app
 
@@ -20,6 +20,8 @@ COPY custom_prerequisites.py .
 RUN ./custom_prerequisites.py
 
 ARG MODEL_NAME
+ARG MODEL_PATH
+
 COPY download.py .
 RUN ./download.py
 
